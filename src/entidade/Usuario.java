@@ -2,16 +2,16 @@ package entidade;
 
 public class Usuario {
 
-    private int idusuario;
+    private int id;
     private String nome;
     private String senha;
 
-    public int getIdusuario() {
-        return idusuario;
+    public int getId() {
+        return id;
     }
 
-    public void setIdusuario(int idusuario) {
-        this.idusuario = idusuario;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {

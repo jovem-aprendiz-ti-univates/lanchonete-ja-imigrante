@@ -60,7 +60,7 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
 
                 i.setNome(resultadoQ.getString("nome"));
                 i.setSenha(resultadoQ.getString("senha"));
-                i.setIdusuario(resultadoQ.getInt("id"));
+                i.setId(resultadoQ.getInt("id"));
             }
 
         } catch (Exception e) {
