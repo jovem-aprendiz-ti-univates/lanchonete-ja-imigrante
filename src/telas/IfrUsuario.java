@@ -278,7 +278,7 @@ public class IfrUsuario extends javax.swing.JInternalFrame {
         if (user == null) {
             JOptionPane.showMessageDialog(null, "Registro não localizado!");
         } else {
-            codigo = user.getId();            
+            codigo = user.getId();
 
             // mudar a aba ativa para Cadastro
             jTabbedPane1.setSelectedIndex(0);
