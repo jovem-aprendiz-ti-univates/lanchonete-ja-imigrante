@@ -7,7 +7,6 @@ package telas;
 
 import dao.UsuarioDAO;
 import entidade.Usuario;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
