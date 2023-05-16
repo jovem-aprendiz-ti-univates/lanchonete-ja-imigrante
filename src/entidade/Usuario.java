@@ -5,6 +5,7 @@ public class Usuario {
     private int id;
     private String nome;
     private String senha;
+    private char situacao;
 
     public int getId() {
         return id;
@@ -28,6 +29,14 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public char getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(char situacao) {
+        this.situacao = situacao;
     }
 
 }

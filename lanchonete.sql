@@ -1,7 +1,7 @@
 -- -----------------------------------------------------
--- Table estado
+-- Table estados
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS estado (
+CREATE TABLE IF NOT EXISTS estados (
   id SERIAL,
   uf CHAR(2) NOT NULL,
   descricao VARCHAR(45) NOT NULL,
@@ -10,16 +10,16 @@ CREATE TABLE IF NOT EXISTS estado (
 
 
 -- -----------------------------------------------------
--- Table cidade
+-- Table cidades
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS cidade (
+CREATE TABLE IF NOT EXISTS cidades (
   id SERIAL,
   descricao VARCHAR(45) NOT NULL,
   estado_id INT NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT fk_cidade_estado
     FOREIGN KEY (estado_id)
-    REFERENCES estado (id)
+    REFERENCES estados (id)
     )
 ;
 
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS clientes (
   PRIMARY KEY (id),
   CONSTRAINT fk_clientes_cidade1
     FOREIGN KEY (cidade_id)
-    REFERENCES cidade (id)
+    REFERENCES cidades (id)
     )
 ;
 
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS colaboradores (
   PRIMARY KEY (id),
   CONSTRAINT fk_clientes_cidade10
     FOREIGN KEY (cidade_id)
-    REFERENCES cidade (id)
+    REFERENCES cidades (id)
     )
 ;
 
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS fornecedores (
   PRIMARY KEY (id),
   CONSTRAINT fk_clientes_cidade11
     FOREIGN KEY (cidade_id)
-    REFERENCES cidade (id)
+    REFERENCES cidades (id)
     )
 ;
 
@@ -195,13 +195,15 @@ CREATE TABLE IF NOT EXISTS compra_produto (
 
 
 -- -----------------------------------------------------
--- Table usuario
+-- Table usuarios
 -- -----------------------------------------------------
-CREATE TABLE usuario (
+CREATE TABLE usuarios (
 	id SERIAL,
 	nome VARCHAR (255) NOT NULL,
 	senha VARCHAR (255) NOT NULL,
 	PRIMARY KEY (id)
 );
 
-INSERT INTO usuario (nome, senha) VALUES ('mateus', md5('teste'));
+INSERT INTO usuarios (nome, senha) VALUES ('mateus', md5('teste'));
+
+ALTER TABLE usuarios ADD COLUMN situacao CHAR(1) DEFAULT 'A';
