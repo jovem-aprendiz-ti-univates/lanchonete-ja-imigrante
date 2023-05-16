@@ -39,4 +39,8 @@ public class Usuario {
         this.situacao = situacao;
     }
 
+    @Override
+    public String toString() {
+        return "ID: " + this.getId() + " Nome: " + this.getNome() + " Senha: " + this.getSenha() + " Situacao: " + this.getSituacao();
+    }
 }

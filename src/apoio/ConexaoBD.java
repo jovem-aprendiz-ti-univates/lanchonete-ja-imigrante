@@ -3,6 +3,10 @@ package apoio;
 /**
  *
  * @author fabricio.pretto
+ * - cria conexao com o BD e estrutura da classe
+ * 
+ * @author mateus.roveda
+ * 16/05/2023 - criado metodos para consulta e updates; atualizada documentacao.
  */
 import java.sql.*;
 import java.io.*;
@@ -28,12 +32,16 @@ public class ConexaoBD {
 
             conexao = DriverManager.getConnection(dburl, dbuser, dbsenha);
 
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException | SQLException e) {
             System.err.println(e);
         }
     }
 
-    // Retorna instância
+    /**
+     * Retorna instância
+     *
+     * @return ConexaoBD
+     */
     public static ConexaoBD getInstance() {
         if (instancia == null) {
             instancia = new ConexaoBD();
@@ -41,7 +49,11 @@ public class ConexaoBD {
         return instancia;
     }
 
-    // Retorna conexão
+    /**
+     * Retorna conexo
+     *
+     * @return conexao
+     */
     public Connection getConnection() {
         if (conexao == null) {
             throw new RuntimeException("conexao==null");
@@ -49,14 +61,39 @@ public class ConexaoBD {
         return conexao;
     }
 
-    // Efetua fechamento da conexão
+    /**
+     * Executa um insert/update no banco de dados
+     *
+     * @param sql: query a ser executada
+     * @return int
+     * @throws java.sql.SQLException
+     */
+    public static int executeUpdate(String sql) throws SQLException {
+        return ConexaoBD.getInstance().getConnection().createStatement().executeUpdate(sql);
+    }
+
+    /**
+     * Executa uma consulta no banco de dados
+     *
+     * @param sql: query a ser executada
+     * @return ResultSet
+     * @throws java.sql.SQLException
+     */
+    public static ResultSet executeQuery(String sql) throws SQLException {
+        return ConexaoBD.getInstance().getConnection().createStatement().executeQuery(sql);
+    }
+
+    /**
+     * Efetua o fechamento da conexao
+     */
     public void shutDown() {
         try {
             conexao.close();
             instancia = null;
             conexao = null;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e);
         }
     }
+
 }

@@ -5,8 +5,9 @@ import apoio.IDAO_T;
 import entidade.Usuario;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -17,32 +18,30 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
 
     @Override
     public String salvar(Usuario o) {
-        try {
-            Statement st = ConexaoBD.getInstance().getConnection().createStatement();
 
+        try {
             String sql = ""
                     + "INSERT INTO usuarios (nome, senha, situacao) VALUES ("
                     + "'" + o.getNome() + "',"
-                    + "'" + o.getSenha() + "',"
+                    + "md5('" + o.getSenha() + "'),"
                     + "'" + o.getSituacao() + "' "
                     + ")";
 
             System.out.println("sql: " + sql);
 
-            int resultado = st.executeUpdate(sql);
+            ConexaoBD.executeUpdate(sql);
 
             return null;
-        } catch (Exception e) {
-            System.out.println("Erro salvar usuario = " + e);
+        } catch (SQLException e) {
+            System.out.println("Erro inserir usuario = " + e);
             return e.toString();
         }
+
     }
 
     @Override
     public String atualizar(Usuario o) {
         try {
-            Statement st = ConexaoBD.getInstance().getConnection().createStatement();
-
             String sql = ""
                     + "UPDATE usuarios "
                     + "SET "
@@ -52,10 +51,10 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
 
             System.out.println("sql: " + sql);
 
-            int resultado = st.executeUpdate(sql);
+            ConexaoBD.executeUpdate(sql);
 
             return null;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Erro atualizar usuario = " + e);
             return e.toString();
         }
@@ -64,8 +63,6 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
     @Override
     public String excluir(int id) {
         try {
-            Statement st = ConexaoBD.getInstance().getConnection().createStatement();
-
             String sql = ""
                     + "UPDATE usuarios "
                     + "SET "
@@ -74,10 +71,10 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
 
             System.out.println("sql: " + sql);
 
-            int resultado = st.executeUpdate(sql);
+            ConexaoBD.executeUpdate(sql);
 
             return null;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Erro excluir/inativar usuario = " + e);
             return e.toString();
         }
@@ -85,12 +82,59 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
 
     @Override
     public ArrayList<Usuario> consultarTodos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            String sql = ""
+                    + "SELECT * FROM usuarios ";
+
+            resultadoQ = ConexaoBD.executeQuery(sql);
+
+            while (resultadoQ.next()) {
+                Usuario usuario = new Usuario();
+
+                usuario.setId(resultadoQ.getInt("id"));
+                usuario.setNome(resultadoQ.getString("nome"));
+                usuario.setSenha(resultadoQ.getString("senha"));
+                usuario.setSituacao(resultadoQ.getString("situacao").charAt(0));
+
+                usuarios.add(usuario);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro consultar todos usuarios = " + e);
+        }
+
+        return usuarios;
     }
 
     @Override
     public ArrayList<Usuario> consultar(String criterio) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            String sql = ""
+                    + "SELECT * FROM usuarios "
+                    + "WHERE  "
+                    + "nome ILIKE '%" + criterio + "%' "
+                    + "ORDER BY nome";
+
+            resultadoQ = ConexaoBD.executeQuery(sql);
+
+            while (resultadoQ.next()) {
+                Usuario usuario = new Usuario();
+
+                usuario.setId(resultadoQ.getInt("id"));
+                usuario.setNome(resultadoQ.getString("nome"));
+                usuario.setSenha(resultadoQ.getString("senha"));
+                usuario.setSituacao(resultadoQ.getString("situacao").charAt(0));
+
+                usuarios.add(usuario);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro consultar todos usuarios = " + e);
+        }
+
+        return usuarios;
     }
 
     @Override
@@ -98,8 +142,6 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
         Usuario u = null;
 
         try {
-            Statement st = ConexaoBD.getInstance().getConnection().createStatement();
-
             String sql = ""
                     + "SELECT * FROM usuarios "
                     + "WHERE  "
@@ -107,7 +149,7 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
 
             System.out.println("sql: " + sql);
 
-            resultadoQ = st.executeQuery(sql);
+            resultadoQ = ConexaoBD.executeQuery(sql);
 
             if (resultadoQ.next()) {
                 u = new Usuario();
@@ -118,7 +160,7 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
                 u.setSituacao(resultadoQ.getString("situacao").charAt(0));
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Erro consultar usuario = " + e);
         }
         return u;
@@ -128,8 +170,6 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
         Usuario i = null;
 
         try {
-            Statement st = ConexaoBD.getInstance().getConnection().createStatement();
-
             String sql = ""
                     + "SELECT * FROM usuarios "
                     + "WHERE  "
@@ -137,7 +177,8 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
                     + "AND situacao = 'A'";
 
             System.out.println(sql);
-            resultadoQ = st.executeQuery(sql);
+
+            resultadoQ = ConexaoBD.executeQuery(sql);
 
             if (resultadoQ.next()) {
                 i = new Usuario();
@@ -145,9 +186,10 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
                 i.setNome(resultadoQ.getString("nome"));
                 i.setSenha(resultadoQ.getString("senha"));
                 i.setId(resultadoQ.getInt("id"));
+                i.setSituacao(resultadoQ.getString("situacao").charAt(0));
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Erro ao consultar usuario: " + e);
         }
         return i;
@@ -155,7 +197,7 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
 
     /**
      * Consulta no banco de dados e popula uma tabela
-     * 
+     *
      * @param tabela: nome da tabela a ser populada
      * @param criterio: criterio de busca no banco
      */
@@ -172,8 +214,12 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
 
         // cria matriz de acordo com nº de registros da tabela
         try {
-            resultadoQ = ConexaoBD.getInstance().getConnection().createStatement().executeQuery(""
-                    + "SELECT count(*) FROM usuarios WHERE nome ILIKE '%" + criterio + "%'");
+            String sql = ""
+                    + "SELECT count(*) FROM usuarios "
+                    + "WHERE  "
+                    + "nome ILIKE '%" + criterio + "%'";
+
+            resultadoQ = ConexaoBD.executeQuery(sql);
 
             resultadoQ.next();
 
@@ -187,9 +233,13 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
 
         // efetua consulta na tabela
         try {
-            resultadoQ = ConexaoBD.getInstance().getConnection().createStatement().executeQuery(""
-                    + "SELECT id, nome, situacao FROM usuarios WHERE nome ILIKE '%" + criterio + "%' "
-                    + "ORDER BY nome");
+            String sql = ""
+                    + "SELECT id, nome, situacao FROM usuarios "
+                    + "WHERE  "
+                    + "nome ILIKE '%" + criterio + "%' "
+                    + "ORDER BY nome";
+
+            resultadoQ = ConexaoBD.executeQuery(sql);
 
             while (resultadoQ.next()) {
 

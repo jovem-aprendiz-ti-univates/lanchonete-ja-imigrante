@@ -7,6 +7,7 @@ package telas;
 
 import dao.UsuarioDAO;
 import entidade.Usuario;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -267,6 +268,7 @@ public class IfrUsuario extends javax.swing.JInternalFrame {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         new UsuarioDAO().popularTabela(tblUsuario, tfdCriterioPesquisa.getText());
+        System.out.println("Consultar todos");
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
