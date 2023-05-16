@@ -63,7 +63,7 @@ public class IfrUsuario extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel1.setText("Descrição");
+        jLabel1.setText("Nome");
 
         jLabel2.setText("Senha");
 
@@ -96,7 +96,7 @@ public class IfrUsuario extends javax.swing.JInternalFrame {
                             .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
                             .addComponent(psfSenha)))
                     .addComponent(btnSalvar))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
