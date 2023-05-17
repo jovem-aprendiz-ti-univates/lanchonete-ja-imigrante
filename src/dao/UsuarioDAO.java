@@ -44,7 +44,8 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
                     + "UPDATE usuarios "
                     + "SET "
                     + "nome = '" + o.getNome() + "',"
-                    + "senha = md5('" + o.getSenha() + "') "
+                    + "senha = md5('" + o.getSenha() + "'),"
+                    + "situacao = '" + o.getSituacao() + "' "
                     + "WHERE id = " + o.getId();
 
             System.out.println("sql: " + sql);
@@ -171,7 +172,7 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
             String sql = ""
                     + "SELECT * FROM usuarios "
                     + "WHERE  "
-                    + "nome = '" + nome + "' AND senha = md5('" + senha + "')"
+                    + "nome = '" + nome + "' AND senha = md5('" + senha + "') "
                     + "AND situacao = 'A'";
 
             System.out.println(sql);
@@ -190,6 +191,7 @@ public class UsuarioDAO implements IDAO_T<Usuario> {
         } catch (SQLException e) {
             System.out.println("Erro ao consultar usuario: " + e);
         }
+
         return i;
     }
 
