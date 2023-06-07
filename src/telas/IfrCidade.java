@@ -4,6 +4,8 @@
  */
 package telas;
 
+import apoio.ComboItem;
+import dao.CombosDAO;
 import entidade.Cidade;
 import java.util.ArrayList;
 
@@ -18,8 +20,10 @@ public class IfrCidade extends javax.swing.JInternalFrame {
      */
     public IfrCidade() {
         initComponents();
+        //new CombosDAO().popularCombo("estados", cmbEstados);
+        new CombosDAO().popularCombo("estados", "id", "descricao", cmbEstados, "");
     }
-    
+
     ArrayList<Cidade> armazena = new ArrayList<>();
 
     /**
@@ -35,12 +39,12 @@ public class IfrCidade extends javax.swing.JInternalFrame {
         btnAtualizar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txaResultados = new javax.swing.JTextArea();
-        txtEstadoID = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtDescricao = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
+        cmbEstados = new javax.swing.JComboBox<>();
 
         setClosable(true);
 
@@ -69,6 +73,8 @@ public class IfrCidade extends javax.swing.JInternalFrame {
             }
         });
 
+        cmbEstados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -78,11 +84,11 @@ public class IfrCidade extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(txtEstadoID, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1)
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSalvar))
+                    .addComponent(btnSalvar)
+                    .addComponent(cmbEstados, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -103,7 +109,7 @@ public class IfrCidade extends javax.swing.JInternalFrame {
                 .addGap(35, 35, 35)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtEstadoID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbEstados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSalvar)
                 .addGap(25, 25, 25))
@@ -131,10 +137,13 @@ public class IfrCidade extends javax.swing.JInternalFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         Cidade cidadezinha = new Cidade();
+        
+        ComboItem estado = (ComboItem) cmbEstados.getSelectedItem();
+        
 
         cidadezinha.setId(Integer.parseInt(txtId.getText()));
         cidadezinha.setDescricao(txtDescricao.getText());
-        cidadezinha.setEstado_id(Integer.parseInt(txtEstadoID.getText()));
+        cidadezinha.setEstado_id(estado.getCodigo());
 
         System.out.println(cidadezinha.getId());
         System.out.println(cidadezinha.getDescricao());
@@ -144,20 +153,19 @@ public class IfrCidade extends javax.swing.JInternalFrame {
 
         txtId.setText("");
         txtDescricao.setText("");
-        txtEstadoID.setText("");
     }//GEN-LAST:event_btnSalvarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtualizar;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> cmbEstados;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txaResultados;
     private javax.swing.JTextField txtDescricao;
-    private javax.swing.JTextField txtEstadoID;
     private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }
